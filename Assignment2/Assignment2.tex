@@ -41,6 +41,98 @@
 %\listoffigures
 %\listoftables
 \newpage
+\section*{Question 4}
+Let $u = {x_1,x_2}$ , i.e. u is 2-D Gaussian vector, so it shows a bivariate normal distribution $\Nu(x,\mu,\Sigma)$ where, 
+
+\begin{equation*}
+\mu = \begin{bmatrix}
+\mu_1\\ 
+\mu_2
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+\Sigma = \begin{bmatrix}
+\Sigma_{11} & \Sigma_{12} \\ 
+\Sigma_{21} & \Sigma_{22} 
+\end{bmatrix}
+\end{equation*}
+
+Note that since $\Sigma$ is a symmetric matrix, $\Sigma = \Sigma^T$.
+The joint density function of u is :
+
+\begin{equation*}
+u(x) = u(x_1,x_2) = \frac{1}{(2\pi )^{n/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}(x-\mu))^T\Sigma^{-1}(x-\mu)] =  \frac{1}{(2\pi )^{n/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}Q(x_1,x_2)]
+\end{equation*}
+
+where Q is defined as:
+
+\begin{equation*}
+
+Q(x_1,x_2) = (x-\mu)^T\Sigma^{-1}(x-\mu) 
+		 = [(x_1-\mu_1)^T,(x_2-\mu_2)^T]\begin{bmatrix}\Sigma^{11} & \Sigma^{12} \\ 
+\Sigma^{21} & \Sigma^{22} 
+\end{bmatrix} \begin{bmatrix}x_1-\mu_1 \\ x_2-\mu_2 \end{bmatrix}
+
+\end{equation*}
+
+We assume that,
+\begin{equation*}
+\Sigma^{-1} = \begin{bmatrix} \Sigma_{11} & \Sigma_{12} \\ 
+\Sigma_{21} & \Sigma_{22} 
+\end{bmatrix}^{-1}  = \begin{bmatrix}\Sigma^{11} & \Sigma^{12} \\ 
+\Sigma^{21} & \Sigma^{22} 
+\end{bmatrix}_1
+\end{equation*}
+
+So, in order to find the conditional distribution of $x_1$ with respect to $x_2$ and vice-versa, we use the conditional probability theorem, i.e
+
+\begin{equation*}
+f(x_1|x_2) = \frac{f(x_1,x_2)}{f(x_2} , and
+\end{equation*}
+
+\begin{equation*}
+f(x_2|x_1) = \frac{f(x_1,x_2)}{f(x_1)}
+\end{equation*} 
+
+where we already defined the joint density function $f(x_1,x_2)$ above and now, we define the individual distributions for $x_1$ and $x_2$, assuming that both components of the 2-D Gaussian vector, u, are already normal with aforementioned defined fixed means and covariance matrices with respect to one another. 
+
+\begin{equation*}
+f(x_1) = \frac{1}{(2\pi )^{c/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}(x_1-\mu_1))^T\Sigma_{11}^{-1}(x_1-\mu_1)] 
+\end{equation*}
+\begin{equation*}
+f(x_2) = \frac{1}{(2\pi )^{d/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}(x_2-\mu_2))^T\Sigma_{22}^{-1}(x_2-\mu_2)]
+\end{equation*}
+assuming c and d are dimensions of $x_1$ and $x_2$ components of u.
+
+So,
+\begin{equation*}
+f(x_1|x_2) = \frac{ \frac{1}{(2\pi )^{n/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}Q(x_1,x_2)]}{\frac{1}{(2\pi )^{d/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}(x_2-\mu_2))^T\Sigma_{22}^{-1}(x_2-\mu_2)]}
+\end{equation*}
+
+\begin{equation*}
+f(x_2|x_1) = \frac{\frac{1}{(2\pi )^{n/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}Q(x_1,x_2)]}{\frac{1}{(2\pi )^{c/2}|\Sigma|^{1/2}}exp[-\frac{1}{2}(x_1-\mu_1))^T\Sigma_{11}^{-1}(x_1-\mu_1)] 
+}
+\end{equation*}
+
+Instead of drawing from a proposed distribution from each dimension, then accepting/rejecting it, in Gibbs sampler, we get a value for that dimension according the variable's conditional distribution, where we calculate a value for a particular dimension, keeping all other values fixed.Let t be the number of states. Following is the algorithm:
+
+\begin{algorithm}[H]
+\SetAlgoLined
+ 1. Set t = 0.\\
+ 2. Generate an initial state $x^{(0)}$.\\
+ 3. Repeat k-times. \\
+\tab set t = t + 1\\
+\tab for each dimension i= 1..D  (\textit{Here, D=2})\\
+\tab draw $x_i$ from $p(x_i|x_1,x_2,...,x_{i-1},x_{i+1},...,x_D)$
+
+\end{algorithm}
+
+In order to sample from this distribution using a Gibbs sampler, we need to have in hand the conditional distributions for variables/dimensions $x_1$ and $x_2$:
+
+So, we calculate $p(x_1|x_2^{(t-1)})$ i.e the conditional for component $x_1$ for state t, keeping the component $x_2$ for the previous state t-1 constant,since the value of $x_2$ for state t isn't calculated yet. After this, we calculate $p(x_2|x_1^{(t)})$, keeping the recently calculated $x_1^{(t})$ fixed. 
+
+This is how we use Gibbs sampling to sample the 2-D Gaussian vector u.
 \section{Question 5}
 Devise a rejection sampling procedure to sample from a beta distribution (a common distribution in ML during Bayesian analysis). The density of the Beta distribution, defined on [0, 1] is given as:
 \begin{equation*}
