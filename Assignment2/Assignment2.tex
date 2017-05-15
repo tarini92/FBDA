@@ -39,4 +39,71 @@
 %\listoffigures
 %\listoftables
 \newpage
+\section{Question 5}
+Devise a rejection sampling procedure to sample from a beta distribution (a common distribution in ML during Bayesian analysis). The density of the Beta distribution, defined on [0, 1] is given as:
+\begin{equation*}
+    p(x) = \frac{1}{\beta(a,b)}x^{a-1}(1-x)^{b-1}
+\end{equation*}
+where $\beta$(a, b) is the beta function defined as $\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}$. $\Gamma$(x) is the Gamma function - the generalization of the factorial for real numbers. The gamma function has the nice property that $\Gamma$(x + 1) = x$\Gamma$(x). Try to be creative in the choice of the reference function for the rejection sampling.
+
+\subsection{Solution: }
+To develop a rejection sampling procedure from a beta distribution whose density function is
+\begin{equation}
+    p(x) = \frac{1}{\beta(a,b)}x^{a-1}(1-x)^{b-1}
+\end{equation}
+where 
+\begin{equation*}
+    \beta(a,b) = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}
+\end{equation*}
+The equation 1 can be written as:
+\begin{equation}
+    p(x) = \frac{f(x)}{constant}
+\end{equation}
+and
+\begin{equation}
+    f(x) = x^{a-1}(1-x)^{b-1}
+\end{equation}
+Now, the rejection sampling procedure for beta distribution can be described in two steps:
+\begin{itemize}
+    \item If \textbf{a $\geq$ 1}, \textbf{b $\geq$ 1}:
+    \newline
+    In this case, the beta density function is bounded i.e. we can bound the beta distribution with a uniform envelope with height as maximum value of f(x). To find the maximum value of f(x), differentiate f(x) wrt x and equating to 0.
+    \begin{equation*}
+        \frac{d}{dx}f(x) = x^{a-1}(1-x)^{b-1} = 0
+    \end{equation*}
+    \begin{equation*}
+        (a-1)x^{a-2}(1-x)^{b-1} = x^{a-1}(b-1)(1-x)^{b-2}
+    \end{equation*}
+    \begin{equation*}
+        x = \frac{a-1}{a+b-2}
+    \end{equation*}
+    So, the maximum value of f(x) is Max, as follows:
+    \begin{equation*}
+        Max = \frac{(a-1)^{a-1}(b-1)^{b-1}}{(a+b-2)^{a+b-2}}
+    \end{equation*}
+    \newline
+    and the bounding uniform envelope around beta distribution is a bounding rectangle with height as the above Max value. We generate points uniformly inside this rectangle and those above the beta distribution region are rejected. Thus, rejection sampling procedure is as follows:
+    \begin{algorithm}[H]
+    Step-1: Obtain a sample \textbf{y} from \textbf{Y} distribution where Y $\sim$ U[0,1] and U denotes the uniform distribution with unit interval.\;
+    \\Step-2: Generate a sample \textbf{u} from the distribution U[0, Max].\; 
+    \\Step-3:  Check whether u $<$ f(y) or not.
+    \\\hfill Step-3a: If this condition holds, Accept \textbf{y} as a sample drawn from f function.\;
+    \\\hfill Step-3b: Else, Reject \textbf{y}, return to the step-1 and repeat the procedure.\;
+    \caption{Rejection Sampling Procedure-I}
+    \end{algorithm}
+    
+    \item
+    If \textbf{a} $\in$ (0,1) and \textbf{b $\geq$ 1} or \textbf{b} $\in$ (0,1) and \textbf{a $\geq$ 1}, then we cannot get a flat bounding envelope, we will take Y = U$^{\frac{1}{a}}$ [or U$^{\frac{1}{b}}$] where U $\sim$ U[0,1] and g(x) = ax$^{a-1}$ [or bx$^{b-1}$] and the other variable a [or b] is unbounded.
+    \newline
+    Thus, $\frac{f(x)}{g(x)}$ is bounded by $\frac{1}{a}$ for all x as described from the graph. So, the algorithm is as follows:
+    \begin{algorithm}[H]
+    Step-1: Obtain a sample \textbf{y} from \textbf{Y} distribution i.e. from g(x), where Y $\sim$ U$^\frac{1}{a}$.\;
+    \\Step-2: Generate a sample \textbf{u} from the distribution U[0, Y$^{a-1}$].\; 
+    \\Step-3:  Check whether u $<$ f(y) or not.
+    \\\hfill Step-3a: If this condition holds, Accept \textbf{y} as a sample drawn from f function.\;
+    \\\hfill Step-3b: Else, Reject \textbf{y}, return to the step-1 and repeat the procedure.\;
+    \caption{Rejection Sampling Procedure-I}
+    \end{algorithm}
+\end{itemize}
+
 \end{document}
