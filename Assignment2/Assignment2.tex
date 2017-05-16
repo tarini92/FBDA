@@ -70,6 +70,57 @@ Total length of D is the product of both upper bounds, i.e
 length(D) = c^k.2^{nh} = O(c^k.2^{nh})    
 \end{equation*}
 
+\subsection{Question 3d.}
+S = \Bigg {0S  if S \notin D \\
+1 (#S) if S \in D}
+
+To prove: Expected length of S' is upper bounded by $(1+\delta)nh$, where n is the length of S.
+
+Let's define h, i.e. entropy.
+
+\begin{equation*}
+    
+
+h = -\sum_{i = 1}^{k} p_ilogp_i
+= -(p_1log_1 + p_2logp_2 + \dots + p_klogp_k)
+nh = -(np_1logp_1 + np_2logp_2 + \dots np_klogp_k)
+nh = -log(p_1^{np_1} \dots p_k^{np_k})
+nh = log(p_1^{-np_1}\dotsp_k^{-np_k})
+
+(1+\delta)nh = log(p_1^{-np_1}\dotsp_k^{-np_k})^{1+\delta}
+
+Let the expected length of S' be X.We need to to prove the upper bound on:
+\end{equation*}
+
+
+\begin{equation*}
+Pr( X \geq (1+\delta)nh )     
+\end{equation*}
+
+where $a = (1+\delta)nh $.
+
+By Chernoff bounds,the following lemma holds good for $0\leq\delta\leq$,
+
+\begin{equation*}
+    Pr[ X \geq (1+\delta)\mu ] \leq e^{\frac{-\mu\delta^2}{3}}   
+\end{equation*}
+
+Here, 
+\begin{equation*}
+
+    Pr( X \geq (1+\delta)nh ) \leq \frac{M_X(t)}{e^{t(1+\delta)nh}}
+    \leq \frac{E[\Pi e^{t\Sigma p_i }}{e^{t(1+\delta)nh}}
+    \leq e^{n((1+\delta)h -\mu - (1+\delta)hlog(\frac{1+\delta}{\mu}))}
+
+\end{equation*}
+
+This proves:
+\begin{equation*}
+     Pr[ X \geq (1+\delta)nh ] \leq e^{\frac{-\mu\delta^2}{3}}   
+\end{equation*}
+
+Therefore, the upper bound on the above inequality is proved.
+
 
 \section*{Question 4}
 Let $u = {x_1,x_2}$ , i.e. u is 2-D Gaussian vector, so it shows a bivariate normal distribution $\Nu(x,\mu,\Sigma)$ where, 
