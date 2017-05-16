@@ -41,6 +41,36 @@
 %\listoffigures
 %\listoftables
 \newpage
+\section{Question 3}
+\subsection{Question 3c.}
+
+"D" = Dictionary of strings
+As we already proved in question 3a),
+
+\begin{equation*}
+    Upper bound on \textit{number of ways to pick k-samples out of length n stream} = 2^{nh}
+\end{equation*}
+
+As we later proved by Chernoff's bound in 3b), upper bound on \textit{difference between expected number of i-symbols and the actual number of i-symbols in a length k sample } is given by:
+\begin{equation*}
+    p(|n_i-np_i| > \epsilon p_i) \leq \frac{\theta\epsilon^2}{2}
+\end{equation*}
+where $\theta = \Sigma = p_i$
+
+$\Sigma p_i$ can be written as $np_i$ so, that makes the upper bound $\frac{np_i\epsilon^2}{2}$. We want the $\epsilon$ to be as small as possible so, we differentiate it w.r.t $\epsilon$, which gives us:
+
+\begin{equation*}
+    c = \epsilon np_i
+\end{equation*}
+This bound is for one sample, so for k samples, the bound becomes c x c x ...k times i.e $c^k$.
+
+Total length of D is the product of both upper bounds, i.e
+\begin{equation*}
+
+length(D) = c^k.2^{nh} = O(c^k.2^{nh})    
+\end{equation*}
+
+
 \section*{Question 4}
 Let $u = {x_1,x_2}$ , i.e. u is 2-D Gaussian vector, so it shows a bivariate normal distribution $\Nu(x,\mu,\Sigma)$ where, 
 
